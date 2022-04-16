@@ -71,6 +71,14 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
 }
 
+# DJOSER SETTINGS
+DJOSER = {
+    'SERIALIZERS':{
+        'current_user': 'api.serializers.ModifyDjoserUserSerializer',
+        'user_create': 'api.serializers.ModifyDjoserUserCreateSerializer',
+    }
+}
+
 
 TEMPLATES = [
     {
