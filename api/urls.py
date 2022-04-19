@@ -3,11 +3,12 @@ from django.urls import path, include
 from rest_framework.routers import SimpleRouter
 from semester import views as semesterViews
 from project import views as projectViews
-
+from team import views as teamViews
 
 router = SimpleRouter()
 router.register('semester', semesterViews.SemesterViewSet)
 router.register('project', projectViews.ProjectViewSet)
+router.register('team', teamViews.TeamViewSet)
 # print(router.urls)
 
 urlpatterns=[
