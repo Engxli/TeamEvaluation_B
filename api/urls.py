@@ -2,10 +2,12 @@ from django import urls
 from django.urls import path, include
 from rest_framework.routers import SimpleRouter
 from semester import views as semesterViews
+from project import views as projectViews
 
 
 router = SimpleRouter()
 router.register('semester', semesterViews.SemesterViewSet)
+router.register('project', projectViews.ProjectViewSet)
 # print(router.urls)
 
 urlpatterns=[
