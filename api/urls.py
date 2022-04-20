@@ -6,7 +6,8 @@ from project import views as projectViews
 from team import views as teamViews
 
 router = SimpleRouter()
-router.register('semester', semesterViews.SemesterViewSet)
+# basename='MyModel'
+router.register('semester', semesterViews.SemesterViewSet, basename='semester')
 router.register('project', projectViews.ProjectViewSet)
 router.register('team', teamViews.TeamViewSet)
 # print(router.urls)
