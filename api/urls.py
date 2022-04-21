@@ -4,11 +4,14 @@ from rest_framework.routers import SimpleRouter
 from semester import views as semesterViews
 from project import views as projectViews
 from team import views as teamViews
+from criteria import views as criteriaView
 
 router = SimpleRouter()
-router.register('semester', semesterViews.SemesterViewSet)
+# basename='MyModel'
+router.register('semester', semesterViews.SemesterViewSet, basename='semester')
 router.register('project', projectViews.ProjectViewSet)
 router.register('team', teamViews.TeamViewSet)
+router.register('criteria', criteriaView.CriteriaViewSet)
 # print(router.urls)
 
 urlpatterns=[
