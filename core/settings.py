@@ -44,7 +44,9 @@ INSTALLED_APPS = [
     'semester',
     'project',
     'team',
-    'criteria'
+    'criteria',
+    'evaluation',
+    'judge',
 ]
 
 MIDDLEWARE = [
