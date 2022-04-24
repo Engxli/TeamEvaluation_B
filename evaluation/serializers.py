@@ -10,28 +10,37 @@ class EvaluationSerializers(serializers.ModelSerializer):
         fields = "__all__"
 
     def get_avg(self, obj:Evaluation):
-        data = []
-        objactData = {}
+
         res = []
-        for marker in obj.judge.all():
-            for team in marker.grade:
+        teams = []
+        judgeObjec = {}
+        criteriaOfJudge = []
+        for judge in obj.judge.all():
+            judgeObjec = {"judge_id":judge.id,"judge_name": judge.name}
+            for team in judge.grade:
                 for criteria in team['grade']:
-                    # print(criteria)
-                    if criteria['criteria_id'] in objactData.keys():
-                        objactData[criteria['criteria_id']]["grade"].append(criteria['grade'])
+                    criteriaOfJudge.append({"criteria_id":criteria['criteria_id'], "criteria_name":criteria['criteria_name'], "criteria_weight":criteria['criteria_weight'], "criteria_score":criteria['grade']})                
+                teams.append({**judgeObjec, "team_id":team['team_id'],"team_name":team['team_name'],"criteria":criteriaOfJudge})
+                criteriaOfJudge=[]
+            res.append(teams)
+            teams=[]
+        
+        responseAttay = []
+        responseObject = {}
+        for judge in res:
+            for team in judge:
+                if team['team_id'] in responseObject.keys():
+                    responseObject = {team['team_id']:{**responseObject[team['team_id']], "team_id":team['team_id'], "team_name":team['team_name']}}
+                else:
+                    responseObject = {**responseObject, team['team_id']:{ "team_id":team['team_id'], "team_name":team['team_name']}}
+                for index,criteria in enumerate(team['criteria']):
+                    if "criteria" in responseObject[team['team_id']].keys():
+                        if {**criteria, "criteria_score":0} in [{**item, "criteria_score":0} for item in responseObject[team['team_id']]['criteria']]:
+                            responseObject[team['team_id']]['criteria'][index]['criteria_score'].append(criteria['criteria_score'])
+                        else:
+                           responseObject[team['team_id']]['criteria'].append({**criteria, "criteria_score":[criteria['criteria_score']]}) 
                     else:
-                        objactData[criteria['criteria_id']] = {"judgeId": marker.id, "judgeName": marker.name}
-                        objactData[criteria['criteria_id']] = {**objactData[criteria['criteria_id']],"criteriaID": criteria['criteria_id']}
-                        objactData[criteria['criteria_id']] = {**objactData[criteria['criteria_id']], "criteriaName": criteria['criteria_name']}
-                        objactData[criteria['criteria_id']] = {**objactData[criteria['criteria_id']], "criteriaWeight": criteria['criteria_weight']}
-                        objactData[criteria['criteria_id']] = {**objactData[criteria['criteria_id']], "grade": [criteria['grade']]}
-            data.append(objactData)
-            objactData={}
-        
-        for marker in data:
-            for key,value in marker.items():
-                value['avgGrade'] = (sum(value['grade'])/len(value['grade']))*10
-                res.append(value)
-        
-        return res
+                        responseObject[team['team_id']]['criteria'] = [{**criteria, "criteria_score":[criteria['criteria_score']]}]
+  
+        return responseObject
         
