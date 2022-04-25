@@ -15,6 +15,7 @@ class ProjectGetViewSerializer(serializers.ModelSerializer):
 
 class ProjectViewSerializer(serializers.ModelSerializer):
     # semester = serializers.
+
     team = TeamViewSerializer(many=True, read_only=True)
     class Meta:
         model = Project
