@@ -27,9 +27,6 @@ class EvaluationSerializers(serializers.ModelSerializer):
         avgWeight = []
         allRes = {}
         allRes2 = []
-        avgWeightb = []
-        allResb = {}
-        allRes2b = []
         responseObject = {"0":{'criteria':[]}, "judge":0}
         for i in [1,2]:
             for judge in res:
