@@ -29,6 +29,7 @@ class EvaluationSerializers(serializers.ModelSerializer):
         allRes2 = []
         responseObject = {"0":{'criteria':[]}, "judge":0}
         for i in [1,2]:
+            responseObject = {"0":{'criteria':[]}, "judge":0}
             for judge in res:
                 for team in judge:
                     if team['team_id'] in responseObject.keys():
