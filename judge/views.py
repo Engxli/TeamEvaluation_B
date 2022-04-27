@@ -5,7 +5,6 @@ from .serializers import JudgeSerializers,JudgeCreateSerializers
 class JudgeViewset(ModelViewSet):
     queryset = Judge.objects.all()
 
-
     def get_serializer_class(self):
         if(self.request.method == "POST"):
             return JudgeCreateSerializers
