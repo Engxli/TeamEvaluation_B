@@ -20,7 +20,7 @@ class EvaluationSerializers(serializers.ModelSerializer):
             for team in judge.grade:
                 for criteria in team['grade']:
                     criteriaOfJudge.append({"criteria_id":criteria['criteria_id'], "criteria_name":criteria['criteria_name'], "criteria_weight":criteria['criteria_weight'], "criteria_score":criteria['grade']})                
-                teams.append({**judgeObjec, "team_id":team['team_id'],"team_name":team['team_name'],"criteria":criteriaOfJudge})
+                teams.append({**judgeObjec, "team_id":team['team_id'],"team_name":team['team_name'],"criteria":criteriaOfJudge, "note":{"judge_id":judge.id,"judge_name": judge.name,"note":team['note']}})
                 criteriaOfJudge=[]
             res.append(teams)
             teams=[]
@@ -34,8 +34,13 @@ class EvaluationSerializers(serializers.ModelSerializer):
                 for team in judge:
                     if team['team_id'] in responseObject.keys():
                         responseObject = {**responseObject,team['team_id']:{**responseObject[team['team_id']], "team_id":team['team_id'], "team_name":team['team_name']}}
+                        if(i == 1):
+                            # pass
+                            responseObject[team['team_id']]['notes'].append(team['note'])
                     else:
-                        responseObject = {**responseObject, team['team_id']:{ "team_id":team['team_id'], "team_name":team['team_name']}}
+                        responseObject = {**responseObject, team['team_id']:{ "team_id":team['team_id'], "team_name":team['team_name'], "notes":[team['note']]}}
+                        # print(team)
+
                     for index,criteria in enumerate(team['criteria']):
                         if "criteria" in responseObject[team['team_id']].keys():
                             if {**criteria, "criteria_score":0, "avg":0, "avg_weight":0} in [{**item, "criteria_score":0, "avg":0, "avg_weight":0} for item in responseObject[team['team_id']]['criteria']]:

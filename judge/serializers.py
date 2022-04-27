@@ -14,7 +14,7 @@ class JudgeCreateSerializers(serializers.ModelSerializer):
             defCriteria.append({"criteria_id": criteria.id, "criteria_name":criteria.name, "criteria_weight":criteria.weight, "grade":0})
         teams = []
         for team in validated_data['evaluation'].project.team.all():
-            teams.append({"team_id":team.id, "team_name":team.name,"grade":defCriteria})
+            teams.append({"team_id":team.id, "team_name":team.name,"grade":defCriteria, "note":""})
         validated_data['grade'] = teams
         return super().create(validated_data)
 
